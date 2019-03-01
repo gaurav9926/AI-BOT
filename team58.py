@@ -11,12 +11,117 @@ class Player58:
 		self.ninfinity = -99999999
 		self.next_move = (0, 0)
 		self.symbol = 'x'
-		self.value = [1 , 10 , 100 ]
+		self.value = [1 , 10 , 100 , 1000]
 
 
 	def evaluation(self, board, old_move):
 		# return randint(-1000,1000)
 		# return 1
+		value = 0
+		flg = -1
+		
+		for k in range(2):
+			for x in range(0,9,3):
+				for y in range(0,9,3):
+					flag = -1
+					local = 0
+					# For Rows
+					for i in range(3):
+						countx = 0
+						counto = 0
+						countd = 0
+						for j in range(3):
+							if board.big_boards_status[k][x+i][y+j] == '-':
+								countd += 1
+							if board.big_boards_status[k][x+i][y+j] == 'o':
+								counto += 1
+							if board.big_boards_status[k][x+i][y+j] == 'x':
+								countx += 1
+						if countx == 3:
+							local = self.value[countx]
+							flag = 1
+							break
+						elif counto == 3:
+							local = -self.value[countx]
+							flag = 1
+							break
+						else:
+							local += self.value[countx]	
+					if flag == 1:
+						value += local
+						continue
+
+					# For Coloumns
+					for j in range(3):
+						countx = 0
+						counto = 0
+						countd = 0
+						for i in range(3):
+							if board.big_boards_status[k][x+i][y+j] == '-':
+								countd += 1
+							if board.big_boards_status[k][x+i][y+j] == 'o':
+								counto += 1
+							if board.big_boards_status[k][x+i][y+j] == 'x':
+								countx += 1
+						if countx == 3:
+							local = self.value[countx]
+							flag = 1
+							break
+						elif counto == 3:
+							local = -self.value[countx]
+							flag = 1
+							break
+						else:
+							local += self.value[countx]
+					if flag == 1:
+						value += local
+						continue
+
+					# For Diagonals
+					countx = 0
+					counto = 0
+					countd = 0
+					for i in range(3):
+						if board.big_boards_status[k][x+i][y+i] == '-':
+							countd += 1
+						if board.big_boards_status[k][x+i][y+i] == 'o':
+							counto += 1
+						if board.big_boards_status[k][x+i][y+i] == 'x':
+							countx += 1
+					if countx == 3:
+						local = self.value[countx]
+						flag = 1
+					elif (counto == 3):
+						local = -self.value[countx]
+						flag = 1
+					else:
+						local += self.value[countx]
+					if flag == 1:
+						value += local
+						continue
+
+
+					countx = 0
+					counto = 0
+					countd = 0
+					for i in range(3):
+						if board.big_boards_status[k][x+i][y+2-i] == '-':
+							countd += 1
+						if board.big_boards_status[k][x+i][y+2-i] == 'o':
+							counto += 1
+						if board.big_boards_status[k][x+i][y+2-i] == 'x':
+							countx += 1
+					if countx == 3:
+						local = self.value[countx]
+						flag = 1
+					elif counto == 3:
+						local = -self.value[countx]
+						flag = 1
+					else:
+						local += self.value[countx]
+					
+					value += local
+		return value	
 
 
 	
